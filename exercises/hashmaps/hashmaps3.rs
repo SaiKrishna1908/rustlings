@@ -14,7 +14,7 @@
 
 // Execute `rustlings hint hashmaps3` or use the `hint` watch subcommand for a hint.
 
-// I AM NOT DONE
+
 
 use std::collections::HashMap;
 
@@ -40,6 +40,46 @@ fn build_scores_table(results: String) -> HashMap<String, Team> {
         // will be the number of goals conceded from team_2, and similarly
         // goals scored by team_2 will be the number of goals conceded by
         // team_1.
+        let name1 = String::from(&team_1_name);  
+        let name2 = String::from(&team_2_name);      
+                
+        
+        if scores.contains_key(&name1) {
+            let existing_team = scores.get(&name1).unwrap();
+            let existing_team_score = existing_team.goals_scored;
+            let existing_team_conceded = existing_team.goals_conceded;
+            let temp_name = String::from(&existing_team.name);            
+            scores.insert(String::from(&temp_name), Team {
+                name: temp_name,
+                goals_scored: team_1_score + existing_team_score,
+                goals_conceded: team_2_score + existing_team_conceded
+            });
+        } else {
+            let team1 = Team {
+                name: team_1_name,
+                goals_scored: team_1_score,
+                goals_conceded: team_2_score
+            };
+            scores.insert(String::from(&name1), team1);
+        }
+        if scores.contains_key(&name2) {
+            let existing_team_2 = scores.get(&name2).unwrap();
+            let existing_team_score = existing_team_2.goals_scored;
+            let existing_team_conceded = existing_team_2.goals_conceded;
+            let temp_name = String::from(&existing_team_2.name);
+            scores.insert(name2, Team {
+                name: temp_name,
+                goals_scored: team_2_score + existing_team_score,
+                goals_conceded: team_1_score + existing_team_conceded
+            });
+        } else {
+            let team2 = Team {
+                name: team_2_name,
+                goals_scored: team_2_score,
+                goals_conceded: team_1_score
+            };
+            scores.insert(String::from(&name2), team2);
+        }        
     }
     scores
 }
